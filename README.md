@@ -24,7 +24,7 @@ Or, with [GoConvey](goconvey.co):
     go install github.com/smartystreets/goconvey
     $GOPATH/bin/goconvey
 
-Browse to http://localhost:8080 for auto-updating results.
+Browse to `http://localhost:8080` for auto-updating results.
 
 ## Why?
 
