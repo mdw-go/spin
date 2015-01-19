@@ -28,7 +28,7 @@ Browse to `http://localhost:8080` for auto-updating results.
 
 ## Why?
 
-This code represents a loose, simplified reworking of the spinner at [`github.com/briandowns/spinner`](github.com/briandowns/spinner) for the purpose of serving as a code kata.
+This code represents a loose, simplified reworking of the spinner at [`github.com/briandowns/spinner`](https://github.com/briandowns/spinner) for the purpose of serving as a code kata.
 
 
 -----------------
