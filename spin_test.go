@@ -46,7 +46,7 @@ func TestSpin(t *testing.T) {
 }
 
 func spin(spinner *Spinner) {
-	spinner.Start()
+	spinner.GoStart()
 	time.Sleep(time.Millisecond * 10)
 	spinner.Stop()
 }

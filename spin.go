@@ -10,6 +10,9 @@ import (
 
 var standard *Spinner = New(StyleLine, time.Millisecond*100)
 
+func GoStart() {
+	standard.GoStart()
+}
 func Start() {
 	standard.Start()
 }
@@ -59,11 +62,13 @@ func NewWithPadding(style []string, delay time.Duration, prefix, suffix string) 
 	}
 }
 
-// Start begins the spinner on a fresh goroutine.
-func (self *Spinner) Start() {
-	go self.untilStopped()
+// GoStart begins the spinner on a fresh goroutine.
+func (self *Spinner) GoStart() {
+	go self.Start()
 }
-func (self *Spinner) untilStopped() {
+
+// Start begins the spinner on the current goroutine (hopefully you've got another goroutine that can call Stop...).
+func (self *Spinner) Start() {
 	for {
 		select {
 		case <-self.stop:
