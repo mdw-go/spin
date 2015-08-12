@@ -8,6 +8,15 @@ import (
 	"time"
 )
 
+var standard *Spinner = New(StyleLine, time.Millisecond*100)
+
+func Start() {
+	standard.Start()
+}
+func Stop() {
+	standard.Stop()
+}
+
 var out io.Writer = os.Stdout
 
 var (
