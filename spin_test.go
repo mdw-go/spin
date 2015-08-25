@@ -68,6 +68,9 @@ func (self *carriageReturnAbsorber) Write(value []byte) (int, error) {
 	if value[0] == '\r' && len(value) > 1 {
 		self.CarriageReturns++
 		return self.Buffer.Write(value[1:])
+	} else if value[0] == '\r' {
+		self.CarriageReturns++
+		return 0, nil
 	} else {
 		return self.Buffer.Write(value)
 	}

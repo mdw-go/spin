@@ -72,6 +72,7 @@ func (self *Spinner) Start() {
 	for {
 		select {
 		case <-self.stop:
+			fmt.Fprint(out, "\r") // erase any residual spinner markings
 			return
 		default:
 			self.spinCycle()
