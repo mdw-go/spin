@@ -1,37 +1,84 @@
-# `github.com/mdwhatcott/spin`
+# spin
+--
+    import "github.com/mdwhatcott/spin"
 
-Another console spinner. Enjoy!
+Package spin implements a simple console spinner. See the tests and examples for
+examples.
 
-## Install
+## Usage
 
-    go get -t github.com/mdwhatcott/spin
+```go
+var (
+	// StyleLine is a simple example of the kinds of styles you could pass into the New... functions.
+	StyleLine = []string{"|", "/", "-", "\\"}
 
-## Demo
+	// StyleSteps is another example of the kinds of styles you could pass into the New... functions.
+	StyleSteps = []string{"▁", "▃", "▄", "▅", "▆", "▇", "█", "▇", "▆", "▅", "▄", "▃"}
 
-    cd $GOPATH/src/github.com/mdwhatcott/spin/examples
-    go run example.go
+	// StyleShutter is another example of the kinds of styles you could pass into the New... functions.
+	StyleShutter = []string{"▉", "▊", "▋", "▌", "▍", "▎", "▏", "▎", "▍", "▌", "▋", "▊", "▉"}
+)
+```
 
-## Tests
+#### func  GoStart
 
-    cd $GOPATH/src/github.com/mdwhatcott/spin
+```go
+func GoStart()
+```
 
-At the console:
+#### func  Start
 
-    go test -v ./...
+```go
+func Start()
+```
 
-Or, with [GoConvey](goconvey.co):
+#### func  Stop
 
-    go install github.com/smartystreets/goconvey
-    $GOPATH/bin/goconvey
+```go
+func Stop()
+```
 
-Browse to `http://localhost:8080` for auto-updating results.
+#### type Spinner
 
-## Why?
-
-This code represents a loose, simplified reworking of the spinner at [`github.com/briandowns/spinner`](https://github.com/briandowns/spinner) for the purpose of serving as a code kata.
-
-
------------------
+```go
+type Spinner struct {
+}
+```
 
 
-Enjoy!
+#### func  New
+
+```go
+func New(style []string, delay time.Duration) *Spinner
+```
+New creates a spinner which you can start and stop.
+
+#### func  NewWithPadding
+
+```go
+func NewWithPadding(style []string, delay time.Duration, prefix, suffix string) *Spinner
+```
+NewWithPadding creates a spinner which you can start and stop. Allows a prefix
+and suffix to be printed along with the specified style.
+
+#### func (*Spinner) GoStart
+
+```go
+func (self *Spinner) GoStart()
+```
+GoStart begins the spinner on a fresh goroutine.
+
+#### func (*Spinner) Start
+
+```go
+func (self *Spinner) Start()
+```
+Start begins the spinner on the current goroutine (hopefully you've got another
+goroutine that can call Stop...).
+
+#### func (*Spinner) Stop
+
+```go
+func (self *Spinner) Stop()
+```
+Stop sends a signal to stop the spinner.
