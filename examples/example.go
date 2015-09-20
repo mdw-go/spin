@@ -18,7 +18,7 @@ func main() {
 
 func Show(title string, style []string) {
 	spinner := spin.NewWithPadding(style, time.Millisecond*100, title, "    "+fmt.Sprint(style))
-	spinner.Start()
+	spinner.GoStart()
 	time.Sleep(time.Second * 3)
 	spinner.Stop()
 	fmt.Println("\n")
