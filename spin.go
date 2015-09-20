@@ -20,8 +20,6 @@ func Stop() {
 	standard.Stop()
 }
 
-var out io.Writer = os.Stdout
-
 var (
 	// StyleLine is a simple example of the kinds of styles you could pass into the New... functions.
 	StyleLine = []string{"|", "/", "-", "\\"}
@@ -34,6 +32,7 @@ var (
 )
 
 type Spinner struct {
+	out    *output
 	style  []string
 	delay  time.Duration
 	prefix string
@@ -72,7 +71,7 @@ func (self *Spinner) Start() {
 	for {
 		select {
 		case <-self.stop:
-			fmt.Fprint(out, "\r") // erase any residual spinner markings
+			fmt.Fprint(self.out, "\r") // erase any residual spinner markings
 			return
 		default:
 			self.spinCycle()
@@ -81,7 +80,7 @@ func (self *Spinner) Start() {
 }
 func (self *Spinner) spinCycle() {
 	for _, symbol := range self.style {
-		fmt.Fprintf(out, "\r%s%s%s", self.prefix, symbol, self.suffix)
+		fmt.Fprintf(self.out, "\r%s%s%s", self.prefix, symbol, self.suffix)
 		time.Sleep(self.delay)
 	}
 }
@@ -89,4 +88,17 @@ func (self *Spinner) spinCycle() {
 // Stop sends a signal to stop the spinner.
 func (self *Spinner) Stop() {
 	self.stop <- struct{}{}
+}
+
+////////////////////////////////////////////////////////
+
+type output struct {
+	out io.Writer
+}
+
+func (self *output) Write(p []byte) (int, error) {
+	if self == nil {
+		return os.Stdout.Write(p)
+	}
+	return self.out.Write(p)
 }

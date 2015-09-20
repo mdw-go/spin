@@ -3,52 +3,54 @@ package spin
 import (
 	"bytes"
 	"strings"
-	"testing"
 	"time"
 
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/smartystreets/assertions/should"
+	"github.com/smartystreets/gunit"
 )
 
-func TestSpin(t *testing.T) {
-	Convey("Subject: inspecting raw spin output", t, func() {
-		output := &carriageReturnAbsorber{Buffer: bytes.NewBufferString("")}
-		out = output
+//go:generate gunit
 
-		Convey("As a result of starting a spinner", func(c C) {
-			spin(New(StyleLine, time.Millisecond))
+type SpinFixture struct {
+	*gunit.Fixture
 
-			Convey("The provided pattern should be repeatedly written to the output", func() {
-				expected := strings.Join(StyleLine, "")
-				So(output.String(), ShouldStartWith, expected+expected)
-			})
-
-			Convey("Each write to the console should start with a carriage return", func() {
-				So(output.CarriageReturns, ShouldEqual, output.TotalWrites)
-			})
-		})
-
-		Convey("When a prefix and suffix are provided", func(c C) {
-			spin(NewWithPadding(StyleLine, time.Millisecond, ">> ", " <<"))
-
-			Convey("The prefix and suffix should appear before and after each character in the pattern", func() {
-				expected := ">> | <<" +
-					">> / <<" +
-					">> - <<" +
-					">> \\ <<"
-				So(output.String(), ShouldStartWith, expected+expected)
-			})
-
-			Convey("Each write to the console should start with a carriage return", func() {
-				So(output.CarriageReturns, ShouldEqual, output.TotalWrites)
-			})
-		})
-	})
+	absorber *carriageReturnAbsorber
+	output   *output
 }
 
-func spin(spinner *Spinner) {
+func (this *SpinFixture) Setup() {
+	this.absorber = &carriageReturnAbsorber{Buffer: bytes.NewBufferString("")}
+	this.output = &output{out: this.absorber}
+}
+
+func (this *SpinFixture) spin(spinner *Spinner) {
+	spinner.out = this.output
 	spinner.GoStart()
-	time.Sleep(time.Millisecond * 10)
+	time.Sleep(time.Millisecond)
 	spinner.Stop()
+}
+
+func (this *SpinFixture) TestSpinner() {
+	this.spin(New(StyleLine, time.Nanosecond))
+
+	expected := strings.Join(StyleLine, "")
+
+	this.Println("- The provided pattern should be written repeatedly to the output.")
+	this.So(this.absorber.String(), should.StartWith, expected+expected)
+
+	this.Println("- Each write should start with a carriage return.")
+	this.So(this.absorber.CarriageReturns, should.Equal, this.absorber.TotalWrites)
+}
+
+func (this *SpinFixture) TestSpinner_PrefixSuffix() {
+	this.spin(NewWithPadding(StyleLine, time.Nanosecond, ">> ", " <<"))
+
+	expected := ">> | <<" +
+		">> / <<" +
+		">> - <<" +
+		">> \\ <<"
+	this.Println("- The prefix and suffix should surround each write.")
+	this.So(this.absorber.String(), should.StartWith, expected+expected)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -75,3 +77,5 @@ func (self *carriageReturnAbsorber) Write(value []byte) (int, error) {
 		return self.Buffer.Write(value)
 	}
 }
+
+////////////////////////////////////////////////////////////////////////////
