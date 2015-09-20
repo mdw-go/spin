@@ -10,12 +10,17 @@ import (
 
 var standard *Spinner = New(StyleLine, time.Millisecond*100)
 
+// GoStart forwards to a package-level *Spinner (for convenience).
 func GoStart() {
 	standard.GoStart()
 }
+
+// Start forwards to a package-level *Spinner (for convenience).
 func Start() {
 	standard.Start()
 }
+
+// Stop forwards to a package-level *Spinner (for convenience).
 func Stop() {
 	standard.Stop()
 }
@@ -31,6 +36,9 @@ var (
 	StyleShutter = []string{"▉", "▊", "▋", "▌", "▍", "▎", "▏", "▎", "▍", "▌", "▋", "▊", "▉"}
 )
 
+// Spinner prints a repeating pattern to os.Stdout by printing a sequence of characters
+// interspersed with carriage returns. A Spinner is controlled by the provided methods:
+// Start, GoStart (like calling `go Start()`, and Stop.
 type Spinner struct {
 	out    *output
 	style  []string

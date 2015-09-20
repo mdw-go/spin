@@ -25,18 +25,21 @@ var (
 ```go
 func GoStart()
 ```
+GoStart forwards to a package-level *Spinner (for convenience).
 
 #### func  Start
 
 ```go
 func Start()
 ```
+Start forwards to a package-level *Spinner (for convenience).
 
 #### func  Stop
 
 ```go
 func Stop()
 ```
+Stop forwards to a package-level *Spinner (for convenience).
 
 #### type Spinner
 
@@ -45,6 +48,9 @@ type Spinner struct {
 }
 ```
 
+Spinner prints a repeating pattern to os.Stdout by printing a sequence of
+characters interspersed with carriage returns. A Spinner is controlled by the
+provided methods: Start, GoStart (like calling `go Start()`, and Stop.
 
 #### func  New
 
