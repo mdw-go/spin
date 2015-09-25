@@ -26,14 +26,11 @@ func Stop() {
 }
 
 var (
-	// StyleLine is a simple example of the kinds of styles you could pass into the New... functions.
-	StyleLine = []string{"|", "/", "-", "\\"}
-
-	// StyleSteps is another example of the kinds of styles you could pass into the New... functions.
-	StyleSteps = []string{"▁", "▃", "▄", "▅", "▆", "▇", "█", "▇", "▆", "▅", "▄", "▃"}
-
-	// StyleShutter is another example of the kinds of styles you could pass into the New... functions.
-	StyleShutter = []string{"▉", "▊", "▋", "▌", "▍", "▎", "▏", "▎", "▍", "▌", "▋", "▊", "▉"}
+	StyleLine     = "|/-\\"
+	StylePops     = "-=*%*="
+	StyleSteps    = "▁▃▄▅▆▇█▇▆▅▄▃"
+	StyleShutter  = "▉▊▋▌▍▎▏▎▍▌▋▊▉"
+	StyleBrackets = ">})|({<-<{(|)}>"
 )
 
 // Spinner prints a repeating pattern to os.Stdout by printing a sequence of characters
@@ -41,7 +38,7 @@ var (
 // Start, GoStart (like calling `go Start()`, and Stop.
 type Spinner struct {
 	out    *output
-	style  []string
+	style  string
 	delay  time.Duration
 	prefix string
 	suffix string
@@ -49,7 +46,7 @@ type Spinner struct {
 }
 
 // New creates a spinner which you can start and stop.
-func New(style []string, delay time.Duration) *Spinner {
+func New(style string, delay time.Duration) *Spinner {
 	return &Spinner{
 		style: style,
 		delay: delay,
@@ -59,7 +56,7 @@ func New(style []string, delay time.Duration) *Spinner {
 
 // NewWithPadding creates a spinner which you can start and stop.
 // Allows a prefix and suffix to be printed along with the specified style.
-func NewWithPadding(style []string, delay time.Duration, prefix, suffix string) *Spinner {
+func NewWithPadding(style string, delay time.Duration, prefix, suffix string) *Spinner {
 	return &Spinner{
 		style:  style,
 		delay:  delay,
@@ -88,7 +85,7 @@ func (self *Spinner) Start() {
 }
 func (self *Spinner) spinCycle() {
 	for _, symbol := range self.style {
-		fmt.Fprintf(self.out, "\r%s%s%s", self.prefix, symbol, self.suffix)
+		fmt.Fprintf(self.out, "\r%s%s%s", self.prefix, string(symbol), self.suffix)
 		time.Sleep(self.delay)
 	}
 }

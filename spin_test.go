@@ -2,7 +2,6 @@ package spin
 
 import (
 	"bytes"
-	"strings"
 	"time"
 
 	"github.com/smartystreets/assertions/should"
@@ -33,7 +32,7 @@ func (this *SpinFixture) spin(spinner *Spinner) {
 func (this *SpinFixture) TestSpinner() {
 	this.spin(New(StyleLine, time.Nanosecond))
 
-	expected := strings.Join(StyleLine, "")
+	expected := StyleLine
 
 	this.Println("- The provided pattern should be written repeatedly to the output.")
 	this.So(this.absorber.String(), should.StartWith, expected+expected)
