@@ -31,6 +31,8 @@ var (
 	StyleSteps    = "▁▃▄▅▆▇█▇▆▅▄▃"
 	StyleShutter  = "▉▊▋▌▍▎▏▎▍▌▋▊▉"
 	StyleBrackets = ">})|({<-<{(|)}>"
+	StyleNumbers  = "0123456789"
+	StyleAlphabet = "abcdefghijklmnopqrstuvwxyz"
 )
 
 // Spinner prints a repeating pattern to os.Stdout by printing a sequence of characters
