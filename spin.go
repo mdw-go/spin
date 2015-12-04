@@ -12,7 +12,7 @@ var standard *Spinner = New(StyleLine, time.Millisecond*100)
 
 // GoStart forwards to a package-level *Spinner (for convenience).
 func GoStart() {
-	standard.GoStart()
+	go Start()
 }
 
 // Start forwards to a package-level *Spinner (for convenience).
@@ -66,11 +66,6 @@ func NewWithPadding(style string, delay time.Duration, prefix, suffix string) *S
 		suffix: suffix,
 		stop:   make(chan struct{}),
 	}
-}
-
-// GoStart begins the spinner on a fresh goroutine.
-func (self *Spinner) GoStart() {
-	go self.Start()
 }
 
 // Start begins the spinner on the current goroutine (hopefully you've got another goroutine that can call Stop...).

@@ -24,7 +24,7 @@ func (this *SpinFixture) Setup() {
 
 func (this *SpinFixture) spin(spinner *Spinner) {
 	spinner.out = this.output
-	spinner.GoStart()
+	go spinner.Start()
 	time.Sleep(time.Millisecond)
 	spinner.Stop()
 }
