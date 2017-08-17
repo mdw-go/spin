@@ -22,7 +22,7 @@ func ShowDefault() {
 }
 
 func ShowStyles() {
-	styles := map[string]string {
+	styles := map[string]string{
 		"spin.StylePops        ": spin.StylePops,
 		"spin.StyleBrackets    ": spin.StyleBrackets,
 		"spin.StyleLine        ": spin.StyleLine,

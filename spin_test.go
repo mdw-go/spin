@@ -2,13 +2,16 @@ package spin
 
 import (
 	"bytes"
+	"testing"
 	"time"
 
 	"github.com/smartystreets/assertions/should"
 	"github.com/smartystreets/gunit"
 )
 
-//go:generate gunit
+func TestSpinFixture(t *testing.T) {
+	gunit.Run(new(SpinFixture), t)
+}
 
 type SpinFixture struct {
 	*gunit.Fixture
