@@ -29,7 +29,7 @@ func ShowStyles() {
 		"spin.StyleSteps       ": spin.StyleSteps,
 		"spin.StyleShutter     ": spin.StyleShutter,
 		"spin.StyleNumbers     ": spin.StyleNumbers,
-		"spin.StyleAphabet     ": spin.StyleAlphabet,
+		"spin.StyleAlphabet    ": spin.StyleAlphabet,
 	}
 	for title, style := range styles {
 		Show(title, style)
