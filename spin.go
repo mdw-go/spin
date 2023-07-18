@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var standard = New(StyleLine, time.Millisecond*100)
+var standard = New()
 
 // GoStart forwards to a package-level *Spinner (for convenience).
 func GoStart() {
@@ -25,14 +25,16 @@ func Stop() {
 	standard.Stop()
 }
 
+type Style string
+
 var (
-	StyleLine     = "|/-\\"
-	StylePops     = "-=*%*="
-	StyleSteps    = "▁▃▄▅▆▇█▇▆▅▄▃"
-	StyleShutter  = "▉▊▋▌▍▎▏▎▍▌▋▊▉"
-	StyleBrackets = ">})|({<-<{(|)}>"
-	StyleNumbers  = "0123456789"
-	StyleAlphabet = "abcdefghijklmnopqrstuvwxyz"
+	StyleLine     = Style("|/-\\")
+	StylePops     = Style("-=*%*=")
+	StyleSteps    = Style("▁▃▄▅▆▇█▇▆▅▄▃")
+	StyleShutter  = Style("▉▊▋▌▍▎▏▎▍▌▋▊▉")
+	StyleBrackets = Style(">})|({<-<{(|)}>")
+	StyleNumbers  = Style("0123456789")
+	StyleAlphabet = Style("abcdefghijklmnopqrstuvwxyz")
 )
 
 // Spinner prints a repeating pattern to os.Stdout by printing a sequence of characters
@@ -40,7 +42,7 @@ var (
 // Start, GoStart (like calling `go Start()`, and Stop.
 type Spinner struct {
 	out    *output
-	style  string
+	style  Style
 	delay  time.Duration
 	prefix string
 	suffix string
@@ -48,24 +50,12 @@ type Spinner struct {
 }
 
 // New creates a spinner which you can start and stop.
-func New(style string, delay time.Duration) *Spinner {
-	return &Spinner{
-		style: style,
-		delay: delay,
-		stop:  make(chan struct{}),
+func New(options ...option) *Spinner {
+	s := &Spinner{stop: make(chan struct{})}
+	for _, option := range append(defaults, options...) {
+		option(s)
 	}
-}
-
-// NewWithPadding creates a spinner which you can start and stop.
-// Allows a prefix and suffix to be printed along with the specified style.
-func NewWithPadding(style string, delay time.Duration, prefix, suffix string) *Spinner {
-	return &Spinner{
-		style:  style,
-		delay:  delay,
-		prefix: prefix,
-		suffix: suffix,
-		stop:   make(chan struct{}),
-	}
+	return s
 }
 
 // Start begins the spinner on the current goroutine (hopefully you've got another goroutine that can call Stop...).

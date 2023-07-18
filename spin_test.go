@@ -33,26 +33,26 @@ func (this *SpinFixture) spin(spinner *Spinner) {
 }
 
 func (this *SpinFixture) TestSpinner() {
-	this.spin(New(StyleLine, time.Nanosecond))
+	this.spin(New(Options.Style(StyleLine), Options.Delay(time.Nanosecond)))
 
 	expected := StyleLine
 
 	this.Println("- The provided pattern should be written repeatedly to the output.")
-	this.So(this.absorber.String(), should.StartWith, expected+expected)
+	this.So(this.absorber.String(), should.StartWith, string(expected+expected))
 
 	this.Println("- Each write should start with a carriage return.")
 	this.So(this.absorber.CarriageReturns.Load(), should.Equal, this.absorber.TotalWrites.Load())
 }
 
 func (this *SpinFixture) TestSpinner_PrefixSuffix() {
-	this.spin(NewWithPadding(StyleLine, time.Nanosecond, ">> ", " <<"))
+	this.spin(New(Options.Style(StyleLine), Options.Delay(time.Nanosecond), Options.Prefix(">> "), Options.Suffix(" <<")))
 
 	expected := ">> | <<" +
 		">> / <<" +
 		">> - <<" +
 		">> \\ <<"
 	this.Println("- The prefix and suffix should surround each write.")
-	this.So(this.absorber.String(), should.StartWith, expected+expected)
+	this.So(this.absorber.String(), should.StartWith, string(expected+expected))
 }
 
 ///////////////////////////////////////////////////////////////////////////////

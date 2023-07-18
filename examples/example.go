@@ -22,7 +22,7 @@ func ShowDefault() {
 }
 
 func ShowStyles() {
-	styles := map[string]string{
+	styles := map[string]spin.Style{
 		"spin.StylePops        ": spin.StylePops,
 		"spin.StyleBrackets    ": spin.StyleBrackets,
 		"spin.StyleLine        ": spin.StyleLine,
@@ -36,10 +36,14 @@ func ShowStyles() {
 	}
 }
 
-func Show(title string, style string) {
+func Show(title string, style spin.Style) {
 	fmt.Println()
 	fmt.Println()
-	spinner := spin.NewWithPadding(style, time.Millisecond*100, title, "    "+fmt.Sprint(style))
+	spinner := spin.New(
+		spin.Options.Style(style),
+		spin.Options.Prefix(title),
+		spin.Options.Suffix("    "+fmt.Sprint(style)),
+	)
 	go spinner.Start()
 	time.Sleep(time.Second * 1)
 	spinner.Stop()
