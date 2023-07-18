@@ -73,7 +73,7 @@ func (self *Spinner) Start() {
 	for {
 		select {
 		case <-self.stop:
-			fmt.Fprint(self.out, "\r") // erase any residual spinner markings
+			_, _ = fmt.Fprint(self.out, "\r") // erase any residual spinner markings
 			return
 		default:
 			self.spinCycle()
@@ -82,7 +82,7 @@ func (self *Spinner) Start() {
 }
 func (self *Spinner) spinCycle() {
 	for _, symbol := range self.style {
-		fmt.Fprintf(self.out, "\r%s%s%s", self.prefix, string(symbol), self.suffix)
+		_, _ = fmt.Fprintf(self.out, "\r%s%s%s", self.prefix, string(symbol), self.suffix)
 		time.Sleep(self.delay)
 	}
 }

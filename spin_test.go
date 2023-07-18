@@ -5,16 +5,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/smartystreets/assertions/should"
-	"github.com/smartystreets/gunit"
+	"github.com/mdwhatcott/testing/should"
 )
 
 func TestSpinFixture(t *testing.T) {
-	gunit.Run(new(SpinFixture), t)
+	should.Run(&SpinFixture{T: should.New(t)}, should.Options.UnitTests())
 }
 
 type SpinFixture struct {
-	*gunit.Fixture
+	*should.T
 
 	absorber *carriageReturnAbsorber
 	output   *output
