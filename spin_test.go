@@ -2,6 +2,7 @@ package spin
 
 import (
 	"bytes"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -20,7 +21,7 @@ type SpinFixture struct {
 }
 
 func (this *SpinFixture) Setup() {
-	this.absorber = &carriageReturnAbsorber{Buffer: bytes.NewBufferString("")}
+	this.absorber = newCarriageReturnAbsorber()
 	this.output = &output{out: this.absorber}
 }
 
@@ -40,7 +41,7 @@ func (this *SpinFixture) TestSpinner() {
 	this.So(this.absorber.String(), should.StartWith, expected+expected)
 
 	this.Println("- Each write should start with a carriage return.")
-	this.So(this.absorber.CarriageReturns, should.Equal, this.absorber.TotalWrites)
+	this.So(this.absorber.CarriageReturns.Load(), should.Equal, this.absorber.TotalWrites.Load())
 }
 
 func (this *SpinFixture) TestSpinner_PrefixSuffix() {
@@ -61,18 +62,26 @@ func (this *SpinFixture) TestSpinner_PrefixSuffix() {
 // but throws out leading carriage returns to make the tests easier to read.
 type carriageReturnAbsorber struct {
 	*bytes.Buffer
-	CarriageReturns int
-	TotalWrites     int
+	CarriageReturns *atomic.Int32
+	TotalWrites     *atomic.Int32
+}
+
+func newCarriageReturnAbsorber() *carriageReturnAbsorber {
+	return &carriageReturnAbsorber{
+		Buffer:          bytes.NewBufferString(""),
+		CarriageReturns: new(atomic.Int32),
+		TotalWrites:     new(atomic.Int32),
+	}
 }
 
 func (self *carriageReturnAbsorber) Write(value []byte) (int, error) {
-	self.TotalWrites++
+	self.TotalWrites.Add(1)
 
 	if value[0] == '\r' && len(value) > 1 {
-		self.CarriageReturns++
+		self.CarriageReturns.Add(1)
 		return self.Buffer.Write(value[1:])
 	} else if value[0] == '\r' {
-		self.CarriageReturns++
+		self.CarriageReturns.Add(1)
 		return 0, nil
 	} else {
 		return self.Buffer.Write(value)

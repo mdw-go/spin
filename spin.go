@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var standard *Spinner = New(StyleLine, time.Millisecond*100)
+var standard = New(StyleLine, time.Millisecond*100)
 
 // GoStart forwards to a package-level *Spinner (for convenience).
 func GoStart() {
