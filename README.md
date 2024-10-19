@@ -1,6 +1,6 @@
 # spin
 --
-    import "github.com/mdwhatcott/spin"
+    import "github.com/mdw-go/spin"
 
 Package spin implements a simple console spinner. See the tests and examples for
 examples.

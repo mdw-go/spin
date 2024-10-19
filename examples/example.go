@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/mdwhatcott/spin"
+	"github.com/mdw-go/spin"
 )
 
 func main() {
